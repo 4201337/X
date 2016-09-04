@@ -1,0 +1,52 @@
+# Rewrite Engine
+RewriteEngine On
+RewriteBase /
+
+# Redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+# Redirect All to index.php
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?path=$1 [NC,L,QSA]
+
+# Deny Access to Hidden (.) Directories and Files
+RewriteCond %{SCRIPT_FILENAME} -d [OR]
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule "(^|/)\." - [F]
+
+# Deny Access to Hidden (_) Directories and Files
+RewriteCond %{SCRIPT_FILENAME} -d [OR]
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule "(^|/)\_" - [F]
+
+# Deny Access to Hidden (-) Directories and Files
+RewriteCond %{SCRIPT_FILENAME} -d [OR]
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule "(^|/)\-" - [F]
+
+# Deny Access to Important Files
+<FilesMatch "(\.(bak|gz|tar|config|conf|ini|inc|log|sh|sql)|~)$">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch>
+
+# Prevent Directory Listing
+Options All -Indexes
+
+# Prevent Indexing
+Header set X-Robots-Tag "noindex, nofollow"
+
+# Disable Server Signature
+ServerSignature Off
+
+# Error Documents
+ErrorDocument 500 "500"
+ErrorDocument 404 "404"
+ErrorDocument 403 "403"
+ErrorDocument 402 "402"
+ErrorDocument 401 "401"
+ErrorDocument 400 "400"
