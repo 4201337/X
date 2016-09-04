@@ -3,8 +3,9 @@
 //
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+ini_set('error_log', dirname(__FILE__) . '/error.log');
 error_reporting(E_ALL);
-date_default_timezone_set('Asia/Riyadh');
+date_default_timezone_set('UTC');
 
 //
 $myLog = [
