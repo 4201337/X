@@ -1,20 +1,37 @@
 from multiprocessing.dummy import Pool as ThreadPool
 from threading import Lock as LockPool
 import requests
+import time
 
 myList = [0] * 1000
-myThreads = 10
+myThreads = 250
 myLock = LockPool()
 myPool = ThreadPool(myThreads)
 
-i = 0
 def myRun(x):
-    global i
-    i += 1
     with myLock:
-        print i
+        print 0
+
+"""
+with open(myList) as myList:
+    myList = myList.readlines()
+"""
+
+myStart = time.time()
 
 if __name__ == '__main__':
     myPool.map(myRun, myList)
     myPool.close()
     myPool.join()
+
+myEnd = time.time()
+
+print '============================='
+print 'Done!'
+print '============================='
+print 'Total Time    :' , round(myEnd - myStart, 2) , 'Seconds'
+print 'Total Threads :' , myThreads
+print 'Total Tries   :' , len(myList)
+print '============================'
+print 'Thank you, come again!'
+print '============================'
